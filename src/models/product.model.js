@@ -12,7 +12,15 @@ WHERE p.id = ?;`, [productId]);
   return result;
 };
 
+const registerProduct = async (productName) => {
+  const [result] = await connection.execute(`INSERT INTO StoreManager.products
+ (name) VALUES (?);`, [productName]);
+
+  return result;
+};
+
 module.exports = {
   listAll,
   findById,
+  registerProduct,
 };

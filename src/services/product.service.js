@@ -11,7 +11,14 @@ const validateProduct = async ({ id }) => {
   return product;
 };
 
+const registerProduct = async (productName) => {
+  const newProduct = await productModel.registerProduct(productName);
+
+  return newProduct;
+};
+
 module.exports = {
   findProducts,
   validateProduct,
+  registerProduct,
 };
