@@ -7,18 +7,24 @@ const productsMock = require("../../mocks/productMock");
 
 describe('Camada Model (Products)', function () {
   it('Testa o listAll', async function () {
-    sinon.stub(connection, 'execute').resolves([productsMock]);
+    sinon.stub(connection, 'execute').resolves([productsMock.products]);
     const products = await productModel.listAll();
 
-    expect(products).to.be.deep.equal(productsMock);
+    expect(products).to.be.deep.equal(productsMock.products);
   });
 
   it('Testa o findById', async function () {
-    sinon.stub(connection, 'execute').resolves([[productsMock[0]]]);
+    sinon.stub(connection, 'execute').resolves([[productsMock.products[0]]]);
     const product = await productModel.findById(42);
 
-    expect(product).to.be.deep.equal(productsMock[0]);
+    expect(product).to.be.deep.equal(productsMock.products[0]);
   });
 
+  it('Testa o registerProduct', async function () {
+    sinon.stub(connection, 'execute').resolves([{insertId: 42}]);
+    const insertedProduct = await productModel.registerProduct(productsMock.productName);
+
+    expect(insertedProduct).to.be.deep.equal({insertId: 42});
+  });
   afterEach(sinon.restore);
 });

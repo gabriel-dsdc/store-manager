@@ -8,7 +8,7 @@ const errorProductMock = require('../../mocks/errorProductMock');
 
 describe('Camada Controller (Products)', function () {
   it('Testa o getAllProducts', async function () {
-    sinon.stub(productService, 'findProducts').resolves(productsMock);
+    sinon.stub(productService, 'findProducts').resolves(productsMock.products);
     const req = {};
     const res = {};
     res.status = sinon.stub().returns(res);
@@ -16,11 +16,11 @@ describe('Camada Controller (Products)', function () {
   
     await productController.getAllProducts(req, res);
     expect(res.status.calledWith(200)).to.be.true;
-    expect(res.json.calledWith(productsMock)).to.be.true;
+    expect(res.json.calledWith(productsMock.products)).to.be.true;
   });
 
   it('Testa se encontra o produto pelo ID', async function () {
-    sinon.stub(productService, 'validateProduct').resolves(productsMock[0]);
+    sinon.stub(productService, 'validateProduct').resolves(productsMock.products[0]);
     const req = {
       params: {
         id: 1
@@ -32,7 +32,7 @@ describe('Camada Controller (Products)', function () {
 
     await productController.getProductById(req, res);
     expect(res.status.calledWith(200)).to.be.true;
-    expect(res.json.calledWith(productsMock[0])).to.be.true;
+    expect(res.json.calledWith(productsMock.products[0])).to.be.true;
   });
 
   it('Será validado que não é possível listar um produto que não existe', async function () {
@@ -49,6 +49,25 @@ describe('Camada Controller (Products)', function () {
     await productController.getProductById(req, res);
     expect(res.status.calledWith(404)).to.be.true;
     expect(res.json.calledWith(errorProductMock)).to.be.true;
+  });
+
+  it('Testa a registerProduct', async function () {
+    sinon.stub(productService, 'registerProduct').resolves({insertId: 1});
+    const req = {
+      body: {
+        name: productsMock.productName
+      }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await productController.registerProduct(req, res);
+    expect(res.status.calledWith(201)).to.be.true;
+    expect(res.json.calledWith({
+    id: 1,
+    name: productsMock.productName,
+  })).to.be.true;
   });
 
   afterEach(sinon.restore);

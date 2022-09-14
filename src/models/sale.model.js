@@ -11,6 +11,7 @@ const registerSaleProduct = async (salesProducts) => {
   const { insertId } = await registerSale();
   const columns = salesProducts.map(() => ' (?, ?, ?)');
   const values = [];
+
   Object.values(salesProducts).forEach(({ productId, quantity }) => {
     values.push(insertId, productId, quantity);
   });
@@ -18,7 +19,6 @@ const registerSaleProduct = async (salesProducts) => {
   await connection.execute(`INSERT INTO StoreManager.sales_products
    (sale_id, product_id, quantity) VALUES
    ${columns};`, values);
-
   return insertId;
 };
 
