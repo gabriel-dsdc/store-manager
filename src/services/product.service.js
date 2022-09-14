@@ -1,6 +1,6 @@
 const productModel = require('../models/product.model');
 
-const findProduct = async () => productModel.listAll();
+const findProducts = async () => productModel.listAll();
 
 const validateProduct = async ({ id }) => {
   const product = await productModel.findById(id);
@@ -12,6 +12,6 @@ const validateProduct = async ({ id }) => {
 };
 
 module.exports = {
-  findProduct,
+  findProducts,
   validateProduct,
 };
