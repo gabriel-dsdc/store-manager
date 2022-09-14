@@ -14,6 +14,22 @@ const registerSale = async (salesProducts) => {
   return insertId;
 };
 
+const getSales = async () => {
+  const allSales = await saleModel.getSales();
+  return allSales;
+};
+
+const getSaleById = async (saleId) => {
+  const saleProducts = await saleModel.getSaleById(saleId);
+
+  if (saleProducts[0]) {
+    return saleProducts;
+  }
+  return { message: 'Sale not found' };
+};
+
 module.exports = {
   registerSale,
+  getSales,
+  getSaleById,
 };
