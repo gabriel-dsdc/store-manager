@@ -20,5 +20,19 @@ describe('Camada Model (Sales)', function () {
     expect(insertId).to.be.equal(1);
   });
 
+  it('Testa a getSales', async function () {
+    sinon.stub(connection, 'execute').resolves([salesMock.allSales]);
+    const allSales = await saleModel.getSales();
+
+    expect(allSales).to.be.deep.equal(salesMock.allSales);
+  });
+
+  it('Testa a getSaleById', async function () {
+    sinon.stub(connection, 'execute').resolves([salesMock.saleById]);
+    const saleById = await saleModel.getSaleById(1);
+
+    expect(saleById).to.be.equal(salesMock.saleById);
+  });
+
   afterEach(sinon.restore);
 });

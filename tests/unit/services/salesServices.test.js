@@ -24,5 +24,26 @@ describe('Camada Service (Sales)', function () {
     expect(errorObject).to.be.deep.equal(errorProductMock);
   });
 
+  it('Testa a getSales', async function () {
+    sinon.stub(saleModel, 'getSales').resolves(salesMock.allSales);
+    
+    const allSales = await saleService.getSales();
+    expect(allSales).to.be.deep.equal(salesMock.allSales);
+  });
+
+  it('Testa a getSaleById', async function () {
+    sinon.stub(saleModel, 'getSaleById').resolves(salesMock.saleById);
+
+    const saleById = await saleService.getSaleById(1);
+    expect(saleById).to.be.equal(salesMock.saleById);
+  });
+
+  it('Testa a getSaleById quando NÃO encontra o sale', async function () {
+    sinon.stub(saleModel, 'getSaleById').resolves([]);
+
+    const errorObject = await saleService.getSaleById(42);
+    expect(errorObject).to.be.deep.equal(salesMock.saleNotFound);
+  });
+
   afterEach(sinon.restore);
 });
