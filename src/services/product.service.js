@@ -17,8 +17,16 @@ const registerProduct = async (productName) => {
   return newProduct;
 };
 
+const updateProduct = async (productId, newProductName) => {
+  const { affectedRows } = await productModel.updateProduct(productId, newProductName);
+  if (affectedRows === 0) {
+    return { message: 'Product not found' };
+  }
+};
+
 module.exports = {
   findProducts,
   validateProduct,
   registerProduct,
+  updateProduct,
 };
