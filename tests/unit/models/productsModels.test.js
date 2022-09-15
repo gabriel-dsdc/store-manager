@@ -41,5 +41,12 @@ describe('Camada Model (Products)', function () {
     expect(affectedRows).to.be.deep.equal({affectedRows: 1});
   });
 
+  it('Testa a searchProductByName', async function () {
+    sinon.stub(connection, 'execute').resolves([[productsMock.products[0]]]);
+    const productsFound = await productModel.searchProductByName('Martelo');
+
+    expect(productsFound).to.be.deep.equal([productsMock.products[0]]);
+  });
+
   afterEach(sinon.restore);
 });

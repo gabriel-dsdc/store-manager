@@ -63,5 +63,12 @@ describe('Camada Services (Products)', function () {
     expect(errorObject).to.be.deep.equal(errorProductMock);
   });
 
+  it('Testa a searchProductByName', async function () {
+    sinon.stub(productModel, 'searchProductByName').resolves([productsMock.products[0]]);
+    const productsFound = await productService.searchProductByName('Martelo');
+
+    expect(productsFound).to.be.deep.equal([productsMock.products[0]]);
+  });
+
   afterEach(sinon.restore);
 });

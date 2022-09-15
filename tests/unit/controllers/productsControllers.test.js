@@ -143,5 +143,21 @@ describe('Camada Controller (Products)', function () {
     expect(res.json.calledWith(errorProductMock)).to.be.true;
   });
 
+  it('Testa a searchProductByName', async function () {
+    sinon.stub(productService, 'searchProductByName').resolves([productsMock.products[0]]);
+    const req = {
+      query: {
+        q: 'Martelo'
+      }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await productController.searchProductByName(req, res);
+    expect(res.status.calledWith(200)).to.be.true;
+    expect(res.json.calledWith([productsMock.products[0]])).to.be.true;
+  });
+
   afterEach(sinon.restore);
 });
