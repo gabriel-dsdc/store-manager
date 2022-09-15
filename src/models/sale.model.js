@@ -43,10 +43,28 @@ WHERE s.id = ?;`, [saleId]);
   return result;
 };
 
+const updateSale = async (saleId, salesProducts) => {
+  const columns = salesProducts.map(() => 'WHEN sp.product_id = ? THEN ?');
+  const values = [];
+
+  Object.values(salesProducts).forEach(({ productId, quantity }) => {
+    values.push(productId, quantity);
+  });
+
+  const [result] = await connection.execute(`UPDATE StoreManager.sales_products sp
+  SET sp.quantity = (CASE
+                       ${columns.join(`\n${' '.repeat(23)}`)}
+                       ELSE sp.quantity
+                     END)
+  WHERE sp.sale_id IN (?);`, [...values, Number(saleId)]);
+  return result;
+};
+
 module.exports = {
   registerSale,
   registerSaleProduct,
   getSales,
   getSaleById,
   deleteSale,
+  updateSale,
 };

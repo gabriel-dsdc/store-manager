@@ -36,9 +36,25 @@ const deleteSale = async (saleId) => {
   }
 };
 
+const updateSale = async (saleId, salesProducts) => {
+  let hasProductFound = salesProducts.map(async ({ productId }) =>
+    productModel.findById(productId));
+  hasProductFound = await Promise.all(hasProductFound);
+
+  if (hasProductFound.includes(undefined)) {
+    return { message: 'Product not found' };
+  }
+
+  const { affectedRows } = await saleModel.updateSale(saleId, salesProducts);
+  if (affectedRows === 0) {
+    return { message: 'Sale not found' };
+  }
+};
+
 module.exports = {
   registerSale,
   getSales,
   getSaleById,
   deleteSale,
+  updateSale,
 };
