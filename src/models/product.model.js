@@ -31,10 +31,17 @@ WHERE p.id = ?;`, [productId]);
   return result;
 };
 
+const searchProductByName = async (productName) => {
+  const [result] = await connection.execute(`SELECT * FROM StoreManager.products p
+WHERE p.name LIKE ?;`, [`%${productName}%`]);
+  return result;
+};
+
 module.exports = {
   listAll,
   findById,
   registerProduct,
   updateProduct,
   deleteProduct,
+  searchProductByName,
 };

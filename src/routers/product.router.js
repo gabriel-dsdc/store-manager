@@ -5,6 +5,7 @@ const productMiddleware = require('../middlewares/product.middleware');
 const router = express.Router();
 
 router.get('/', productController.getAllProducts);
+router.get('/search', productController.searchProductByName);
 router.get('/:id', productController.getProductById);
 
 router.post('/', productMiddleware, productController.registerProduct);
