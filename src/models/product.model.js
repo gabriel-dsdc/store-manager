@@ -25,9 +25,16 @@ SET name = ? WHERE id = ?;`, [newProductName, productId]);
   return result;
 };
 
+const deleteProduct = async (productId) => {
+  const [result] = await connection.execute(`DELETE FROM StoreManager.products p
+WHERE p.id = ?;`, [productId]);
+  return result;
+};
+
 module.exports = {
   listAll,
   findById,
   registerProduct,
   updateProduct,
+  deleteProduct,
 };

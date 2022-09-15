@@ -34,5 +34,12 @@ describe('Camada Model (Products)', function () {
     expect(affectedRows).to.be.deep.equal({affectedRows: 1});
   });
 
+  it('Testa o deleteProduct', async function () {
+    sinon.stub(connection, 'execute').resolves([{affectedRows: 1}]);
+    const affectedRows = await productModel.deleteProduct(1);
+
+    expect(affectedRows).to.be.deep.equal({affectedRows: 1});
+  });
+
   afterEach(sinon.restore);
 });

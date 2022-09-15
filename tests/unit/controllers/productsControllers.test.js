@@ -111,5 +111,37 @@ describe('Camada Controller (Products)', function () {
     expect(res.json.calledWith(errorProductMock)).to.be.true;
   });
 
+  it('Testa a deleteProduct', async function () {
+    sinon.stub(productService, 'deleteProduct').resolves(undefined);
+    const req = {
+      params: {
+        id: 1
+      }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.end = sinon.stub().returns();
+
+    await productController.deleteProduct(req, res);
+    expect(res.status.calledWith(204)).to.be.true;
+    expect(res.end.called).to.be.true;
+  });
+
+  it('Testa a deleteProduct quando NÃO encontra o produto', async function () {
+    sinon.stub(productService, 'deleteProduct').resolves(errorProductMock);
+    const req = {
+      params: {
+        id: 42
+      }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await productController.deleteProduct(req, res);
+    expect(res.status.calledWith(404)).to.be.true;
+    expect(res.json.calledWith(errorProductMock)).to.be.true;
+  });
+
   afterEach(sinon.restore);
 });

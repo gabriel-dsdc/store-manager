@@ -42,9 +42,23 @@ describe('Camada Services (Products)', function () {
     expect(result).to.be.equal(undefined);
   });
 
-  it('Testa se o validateProduct NÃO encontra o produto', async function () {
+  it('Testa se o updateProduct NÃO encontra o produto', async function () {
     sinon.stub(productModel, 'updateProduct').resolves({affectedRows: 0});
     const errorObject = await productService.updateProduct(42, productsMock.productName);
+
+    expect(errorObject).to.be.deep.equal(errorProductMock);
+  });
+
+  it('Testa a deleteProduct', async function () {
+    sinon.stub(productModel, 'deleteProduct').resolves({affectedRows: 1});
+    const result = await productService.deleteProduct(1);
+
+    expect(result).to.be.equal(undefined);
+  });
+
+  it('Testa se o deleteProduct NÃO encontra o produto', async function () {
+    sinon.stub(productModel, 'deleteProduct').resolves({affectedRows: 0});
+    const errorObject = await productService.deleteProduct(42);
 
     expect(errorObject).to.be.deep.equal(errorProductMock);
   });
