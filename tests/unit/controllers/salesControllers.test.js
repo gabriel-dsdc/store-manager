@@ -96,7 +96,7 @@ describe('Camada Controller (Sales)', function () {
     expect(res.end.called).to.be.true;
   });
 
-  it('Testa a deleteSale quando NÃO encontra o produto', async function () {
+  it('Testa a deleteSale quando NÃO encontra sale', async function () {
     sinon.stub(saleService, 'deleteSale').resolves(salesMock.saleNotFound);
     const req = {
       params: {
@@ -108,6 +108,60 @@ describe('Camada Controller (Sales)', function () {
     res.json = sinon.stub().returns();
 
     await saleController.deleteSale(req, res);
+    expect(res.status.calledWith(404)).to.be.true;
+    expect(res.json.calledWith(salesMock.saleNotFound)).to.be.true;
+  });
+
+  it('Testa a updateSale', async function () {
+    sinon.stub(saleService, 'updateSale').resolves(undefined);
+    const req = {
+      params: {
+        id: 1
+      },
+      body: salesMock.salesProducts
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await saleController.updateSale(req, res);
+    expect(res.status.calledWith(200)).to.be.true;
+    expect(res.json.calledWith({
+      saleId: 1,
+      itemsUpdated: salesMock.salesProducts,
+    })).to.be.true;
+  });
+
+  it('Testa a updateSale quando NÃO encontra o produto', async function () {
+    sinon.stub(saleService, 'updateSale').resolves(errorProductMock);
+    const req = {
+      params: {
+        id: 1
+      },
+      body: salesMock.SalesProductsProductIdNotFound
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await saleController.updateSale(req, res);
+    expect(res.status.calledWith(404)).to.be.true;
+    expect(res.json.calledWith(errorProductMock)).to.be.true;
+  });
+
+  it('Testa a updateSale quando NÃO encontra a sale', async function () {
+    sinon.stub(saleService, 'updateSale').resolves(salesMock.saleNotFound);
+    const req = {
+      params: {
+        id: 42
+      },
+      body: salesMock.salesProducts
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await saleController.updateSale(req, res);
     expect(res.status.calledWith(404)).to.be.true;
     expect(res.json.calledWith(salesMock.saleNotFound)).to.be.true;
   });

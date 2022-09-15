@@ -41,5 +41,12 @@ describe('Camada Model (Sales)', function () {
     expect(affectedRows).to.be.deep.equal({affectedRows: 1});
   });
 
+  it('Testa o updateSale', async function () {
+    sinon.stub(connection, 'execute').resolves([{affectedRows: 1}]);
+    const affectedRows = await saleModel.updateSale(1, salesMock.salesProducts);
+
+    expect(affectedRows).to.be.deep.equal({affectedRows: 1});
+  });
+
   afterEach(sinon.restore);
 });

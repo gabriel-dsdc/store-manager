@@ -52,9 +52,30 @@ describe('Camada Service (Sales)', function () {
     expect(result).to.be.equal(undefined);
   });
 
-  it('Testa se o deleteSale NÃO encontra o produto', async function () {
+  it('Testa se o deleteSale NÃO encontra a sale', async function () {
     sinon.stub(saleModel, 'deleteSale').resolves({affectedRows: 0});
     const errorObject = await saleService.deleteSale(42);
+
+    expect(errorObject).to.be.deep.equal(salesMock.saleNotFound);
+  });
+
+  it('Testa a updateSale', async function () {
+    sinon.stub(saleModel, 'updateSale').resolves({affectedRows: 1});
+    const result = await saleService.updateSale(1, salesMock.salesProducts);
+
+    expect(result).to.be.equal(undefined);
+  });
+
+  it('Testa se o updateSale NÃO encontra o produto', async function () {
+    sinon.stub(productModel, 'findById').resolves(undefined);
+    const errorObject = await saleService.updateSale(1, salesMock.salesProducts);
+
+    expect(errorObject).to.be.deep.equal(errorProductMock);
+  });
+
+  it('Testa se o updateSale NÃO encontra a sale', async function () {
+    sinon.stub(saleModel, 'updateSale').resolves({affectedRows: 0});
+    const errorObject = await saleService.updateSale(42, salesMock.salesProducts);
 
     expect(errorObject).to.be.deep.equal(salesMock.saleNotFound);
   });

@@ -39,10 +39,10 @@ const deleteSale = async (req, res) => {
 
 const updateSale = async (req, res) => {
   const { id } = req.params;
-  const saleNotFound = await saleService.updateSale(id, req.body);
+  const saleOrProductNotFound = await saleService.updateSale(id, req.body);
 
-  if (saleNotFound) {
-    return res.status(404).json(saleNotFound);
+  if (saleOrProductNotFound) {
+    return res.status(404).json(saleOrProductNotFound);
   }
   return res.status(200).json({
     saleId: id,
