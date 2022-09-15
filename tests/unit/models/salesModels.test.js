@@ -34,5 +34,12 @@ describe('Camada Model (Sales)', function () {
     expect(saleById).to.be.equal(salesMock.saleById);
   });
 
+  it('Testa o deleteSale', async function () {
+    sinon.stub(connection, 'execute').resolves([{affectedRows: 1}]);
+    const affectedRows = await saleModel.deleteSale(1);
+
+    expect(affectedRows).to.be.deep.equal({affectedRows: 1});
+  });
+
   afterEach(sinon.restore);
 });

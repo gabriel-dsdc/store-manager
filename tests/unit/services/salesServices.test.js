@@ -45,5 +45,19 @@ describe('Camada Service (Sales)', function () {
     expect(errorObject).to.be.deep.equal(salesMock.saleNotFound);
   });
 
+  it('Testa a deleteSale', async function () {
+    sinon.stub(saleModel, 'deleteSale').resolves({affectedRows: 1});
+    const result = await saleService.deleteSale(1);
+
+    expect(result).to.be.equal(undefined);
+  });
+
+  it('Testa se o deleteSale NÃO encontra o produto', async function () {
+    sinon.stub(saleModel, 'deleteSale').resolves({affectedRows: 0});
+    const errorObject = await saleService.deleteSale(42);
+
+    expect(errorObject).to.be.deep.equal(salesMock.saleNotFound);
+  });
+
   afterEach(sinon.restore);
 });

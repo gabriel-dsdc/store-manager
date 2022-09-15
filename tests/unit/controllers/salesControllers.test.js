@@ -80,5 +80,37 @@ describe('Camada Controller (Sales)', function () {
     expect(res.json.calledWith(salesMock.saleNotFound)).to.be.true;
   });
 
+  it('Testa a deleteSale', async function () {
+    sinon.stub(saleService, 'deleteSale').resolves(undefined);
+    const req = {
+      params: {
+        id: 1
+      }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.end = sinon.stub().returns();
+
+    await saleController.deleteSale(req, res);
+    expect(res.status.calledWith(204)).to.be.true;
+    expect(res.end.called).to.be.true;
+  });
+
+  it('Testa a deleteSale quando NÃO encontra o produto', async function () {
+    sinon.stub(saleService, 'deleteSale').resolves(salesMock.saleNotFound);
+    const req = {
+      params: {
+        id: 42
+      }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await saleController.deleteSale(req, res);
+    expect(res.status.calledWith(404)).to.be.true;
+    expect(res.json.calledWith(salesMock.saleNotFound)).to.be.true;
+  });
+
   afterEach(sinon.restore);
 });

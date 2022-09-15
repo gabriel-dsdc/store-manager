@@ -30,7 +30,7 @@ const getSaleById = async (saleId) => {
 
 const deleteSale = async (saleId) => {
   const { affectedRows } = await saleModel.deleteSale(saleId);
-  console.log('ar:', affectedRows);
+
   if (affectedRows === 0) {
     return { message: 'Sale not found' };
   }
