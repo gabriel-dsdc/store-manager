@@ -26,5 +26,13 @@ describe('Camada Model (Products)', function () {
 
     expect(insertedProduct).to.be.deep.equal({insertId: 42});
   });
+
+  it('Testa o updateProduct', async function () {
+    sinon.stub(connection, 'execute').resolves([{affectedRows: 1}]);
+    const affectedRows = await productModel.updateProduct(1, productsMock.productName);
+
+    expect(affectedRows).to.be.deep.equal({affectedRows: 1});
+  });
+
   afterEach(sinon.restore);
 });

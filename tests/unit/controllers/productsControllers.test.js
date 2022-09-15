@@ -65,9 +65,50 @@ describe('Camada Controller (Products)', function () {
     await productController.registerProduct(req, res);
     expect(res.status.calledWith(201)).to.be.true;
     expect(res.json.calledWith({
-    id: 1,
-    name: productsMock.productName,
-  })).to.be.true;
+      id: 1,
+      name: productsMock.productName,
+    })).to.be.true;
+  });
+
+  it('Testa a updateProduct', async function () {
+    sinon.stub(productService, 'updateProduct').resolves(undefined);
+    const req = {
+      params: {
+        id: 1
+      },
+      body: {
+        name: productsMock.productName
+      }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await productController.updateProduct(req, res);
+    expect(res.status.calledWith(200)).to.be.true;
+    expect(res.json.calledWith({
+      id: 1,
+      name: productsMock.productName,
+    })).to.be.true;
+  });
+
+  it('Testa a updateProduct quando NÃO encontra o produto', async function () {
+    sinon.stub(productService, 'updateProduct').resolves(errorProductMock);
+    const req = {
+      params: {
+        id: 42
+      },
+      body: {
+        name: productsMock.productName
+      }
+    };
+    const res = {};
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    await productController.updateProduct(req, res);
+    expect(res.status.calledWith(404)).to.be.true;
+    expect(res.json.calledWith(errorProductMock)).to.be.true;
   });
 
   afterEach(sinon.restore);

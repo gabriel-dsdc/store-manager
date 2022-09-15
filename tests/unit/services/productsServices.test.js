@@ -35,5 +35,19 @@ describe('Camada Services (Products)', function () {
     expect(insertObject).to.be.deep.equal({ insertId: 1 });
   });
 
+  it('Testa a updateProduct', async function () {
+    sinon.stub(productModel, 'updateProduct').resolves({affectedRows: 1});
+    const result = await productService.updateProduct(1, productsMock.productName);
+
+    expect(result).to.be.equal(undefined);
+  });
+
+  it('Testa se o validateProduct NÃO encontra o produto', async function () {
+    sinon.stub(productModel, 'updateProduct').resolves({affectedRows: 0});
+    const errorObject = await productService.updateProduct(42, productsMock.productName);
+
+    expect(errorObject).to.be.deep.equal(errorProductMock);
+  });
+
   afterEach(sinon.restore);
 });
