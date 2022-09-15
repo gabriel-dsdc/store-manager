@@ -37,9 +37,16 @@ WHERE s.id = ?;`, [saleId]);
   return result;
 };
 
+const deleteSale = async (saleId) => {
+  const [result] = await connection.execute(`DELETE FROM StoreManager.sales s
+WHERE s.id = ?;`, [saleId]);
+  return result;
+};
+
 module.exports = {
   registerSale,
   registerSaleProduct,
   getSales,
   getSaleById,
+  deleteSale,
 };
